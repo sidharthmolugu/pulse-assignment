@@ -1,27 +1,54 @@
-Pulse Assignment 🎯
 
-Pulse Assignment is a full-stack web application built using a React (Vite) frontend and a Node.js + Express + Socket.IO backend with MongoDB Atlas as the database.
+Pulsevid is a full-stack web application built using a React (Vite) frontend and a Node.js + Express + Socket.IO backend with MongoDB Atlas as the database.
 It supports user authentication, video uploads, and real-time communication.
 
 Live Website:
 https://pulse-assignment-livid.vercel.app/
 
-🚀 Tech Stack
+Tech Stack
 Frontend
+
 React (Vite)
+
 Axios
+
 Basic CSS
 
 Backend
+
 Node.js + Express
+
 Socket.IO
+
 Mongoose (MongoDB)
+
 Multer
+
 JWT Authentication
+
 Database
+
 MongoDB Atlas
 
-🔧 Backend Setup
+Project Structure
+
+/backend
+ ├── index.js — Express + Socket.IO server
+ ├── routes/
+ │ ├── auth.js — login and registration routes
+ │ └── videos.js — video upload and socket logic
+ ├── models/
+ │ └── User.js — Mongoose user schema
+
+/frontend
+ ├── src/
+ │ ├── components/
+ │ ├── pages/
+ │ └── utils/
+ ├── vite.config.js
+ └── package.json
+
+Backend Setup
 
 Navigate to backend:
 
@@ -38,12 +65,13 @@ Start the backend:
 
 npm start
 
-Expected log:
+Expected output:
 
 Mongo connected
 Server listening on 4000
 
-🎨 Frontend Setup
+Frontend Setup
+
 Navigate to frontend:
 
 cd frontend
@@ -58,33 +86,30 @@ Start development server:
 npm run dev
 
 Frontend runs at:
-
 http://localhost:5173
 
-🧪 Features
+Features
 
 User registration and login
 
 JWT-based authentication
 
-Video upload & listing
+Video upload and listing
 
-Real-time functionality using Socket.IO
+Real-time communication using Socket.IO
 
-Decoupled backend & frontend
+Decoupled backend and frontend
 
 MongoDB persistent storage
 
-📌 Important Notes
+Important Notes
 MongoDB Atlas Access
 
 Your Atlas cluster must allow:
 
 0.0.0.0/0
 
-(MongoDB Atlas → Network Access → Add IP → Allow Access From Anywhere)
-
-Otherwise the backend cannot connect from Render.
+(Atlas → Network Access → Add IP → Allow Access From Anywhere)
 
 Environment Variables
 
@@ -95,15 +120,26 @@ JWT_SECRET=
 Frontend (Vercel):
 VITE_API_URL=<your backend URL>
 
+CORS
 
+Backend must allow:
 
-🌐 Deployment
-Frontend
+http://localhost:5173
 
-Deployed on Vercel:
+https://pulse-assignment-livid.vercel.app
+
+Socket.IO
+
+Socket.IO must enable both websocket and polling transports to work on Render/Vercel.
+
+Uploads Folder
+
+The folder /backend/uploads must exist for video uploads.
+
+Deployment
+
+Frontend (Vercel):
 https://pulse-assignment-livid.vercel.app/
 
-Backend
-
-Deployed on Render (example):
+Backend (Render):
 https://pulse-assignment-bmpx.onrender.com/
