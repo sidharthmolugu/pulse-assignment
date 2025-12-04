@@ -39,21 +39,23 @@ export default function Auth({ onLogin, initialMode = "login", onClose }) {
   }
 
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
       <form
         onSubmit={submit}
-        style={{ display: "flex", gap: 8, alignItems: "center" }}
+        style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}
       >
         <input
           placeholder="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          style={{ padding: "8px", width: "100%", maxWidth: "300px" }}
         />
         <input
           placeholder="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          style={{ padding: "8px", width: "100%", maxWidth: "300px" }}
         />
         <button className="btn" disabled={loading} type="submit">
           {mode === "login" ? "Login" : "Register"}
