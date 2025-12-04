@@ -46,10 +46,7 @@ npm install
 npm run dev
 ```
 
-Open the frontend address printed by Vite (usually `http://localhost:5173`). Use the Upload view to add test videos. The backend exposes streaming endpoints that support HTTP range requests for efficient playback.
 
-Demo (public):
 
-- Demo video and public deployment: PLACEHOLDER_DEMO_LINK
 
 
