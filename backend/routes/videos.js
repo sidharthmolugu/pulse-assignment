@@ -66,11 +66,9 @@ module.exports = (io) => {
       try {
         fs.unlinkSync(path.join(UPLOAD_DIR, req.file.filename));
       } catch (e) {}
-      return res
-        .status(400)
-        .json({
-          error: "invalid file type. allowed: " + allowedExt.join(", "),
-        });
+      return res.status(400).json({
+        error: "invalid file type. allowed: " + allowedExt.join(", "),
+      });
     }
 
     // create metadata, attach tenant if present
