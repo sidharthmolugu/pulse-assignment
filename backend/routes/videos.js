@@ -8,15 +8,17 @@ const jwt = require("jsonwebtoken");
 const { spawn } = require("child_process");
 const ffmpeg = require("fluent-ffmpeg");
 
+// Directory to store uploaded video files
 const UPLOAD_DIR = path.join(__dirname, "..", "uploads");
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
+// Configure multer for file uploads
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+  destination: (req, file, cb) => cb(null, UPLOAD_DIR), // Save files to UPLOAD_DIR
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     const name =
-      Date.now() + "-" + Math.random().toString(36).slice(2, 8) + ext;
+      Date.now() + "-" + Math.random().toString(36).slice(2, 8) + ext; // Generate unique filename
     cb(null, name);
   },
 });
@@ -25,26 +27,26 @@ const upload = multer({ storage, limits: { fileSize: 200 * 1024 * 1024 } }); // 
 module.exports = (io) => {
   const router = express.Router();
 
-  // simple JWT parsing middleware: if Authorization header provided, decode and attach user
+  // Middleware to parse JWT from Authorization header
   router.use(async (req, res, next) => {
     const auth = req.headers.authorization;
     if (!auth) {
-      req.user = null;
+      req.user = null; // No token, treat as anonymous
       return next();
     }
     const parts = auth.split(" ");
     if (parts.length !== 2) {
-      req.user = null;
+      req.user = null; // Invalid token format
       return next();
     }
     const token = parts[1];
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET || "secret");
-      // payload contains { id, role }
+      // Attach user info to request
       req.user = { id: payload.id, role: payload.role };
       return next();
     } catch (err) {
-      // invalid token — treat as anonymous
+      // Invalid token — treat as anonymous
       req.user = null;
       return next();
     }
