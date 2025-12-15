@@ -9,8 +9,8 @@ require("dotenv").config();
 const videosRouter = require("./routes/videos");
 const authRouter = require("./routes/auth");
 
-const app = express();
-const server = http.createServer(app);
+const http = require("http");
+const server = http.Server(app);
 
 // ---------------------
 // Allowed origins
