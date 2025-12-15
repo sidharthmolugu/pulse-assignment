@@ -9,8 +9,11 @@ require("dotenv").config();
 const videosRouter = require("./routes/videos");
 const authRouter = require("./routes/auth");
 
-const http = require("http");
-const server = http.Server(app);
+// ---------------------
+// App & Server
+// ---------------------
+const app = express();
+const server = http.createServer(app);
 
 // ---------------------
 // Allowed origins
@@ -58,20 +61,23 @@ app.use("/api/videos", videosRouter(io));
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error(" MONGO_URI not defined");
+  console.error("❌ MONGO_URI not defined");
   process.exit(1);
 }
 
 mongoose
   .connect(MONGO_URI)
-  .then(() => console.log(" MongoDB connected"))
+  .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err.message);
     process.exit(1);
   });
-// 
+
+// ---------------------
+// Start server (Render-safe)
+// ---------------------
 const PORT = process.env.PORT || 4000;
 
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
