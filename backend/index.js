@@ -2,72 +2,42 @@ const express = require("express");
 const http = require("http");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const socketio = require("socket.io");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 
-
-const videosRouter = require("./routes/videos");
 const authRouter = require("./routes/auth");
+const videosRouter = require("./routes/videos");
 
-// ---------------------
-// App & Server
-// ---------------------
 const app = express();
 const server = http.createServer(app);
 
-// ---------------------
-// CORS (ENV-BASED, SAFE)
-// ---------------------
-const allowedOrigins = ["http://localhost:5173", process.env.CORS_ORIGIN];
-
+// ---------- CORS ----------
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "https://streamit-inky.vercel.app",
     credentials: true,
   })
 );
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ---------------------
-// Socket.io
-// ---------------------
-const io = socketio(server, {
-  cors: {
-    origin: allowedOrigins,
-    credentials: true,
-  },
-  transports: ["websocket", "polling"],
-});
-
-// ---------------------
-// Routes
-// ---------------------
+// ---------- Routes ----------
 app.use("/api/auth", authRouter);
-app.use("/api/videos", videosRouter(io));
+app.use("/api/videos", videosRouter);
 
-
-const MONGO_URI = process.env.MONGO_URI;
-
-if (!MONGO_URI) {
-  console.error("❌ MONGO_URI not defined");
-  process.exit(1);
-}
-
+// ---------- MongoDB ----------
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => {
-    console.error("❌ MongoDB connection error:", err.message);
+    console.error("❌ MongoDB error:", err.message);
     process.exit(1);
   });
 
-// ---------------------
-// Start server (Render-controlled PORT)
-// ---------------------
+// ---------- Server ----------
 const PORT = process.env.PORT;
-
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
